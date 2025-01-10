@@ -26,3 +26,43 @@ Example:
   "email": "john.doe@example.com",
   "password": "password123"
 }
+```
+
+## Endpoint: `/users/login`
+
+### Method: POST
+
+### Description:
+This endpoint is used to log in an existing user. It validates the input data, checks the user's credentials, and generates an authentication token for the user.
+
+### Request Body:
+The request body should be a JSON object with the following fields:
+
+- `email`: A valid email address (required).
+- `password`: A string with a minimum length of 8 characters (required).
+
+Example:
+```json
+{
+  "email": "john.doe@example.com",
+  "password": "password123"
+}
+```
+
+### Response:
+The response will be a JSON object containing the generated authentication token and the user details.
+
+Example:
+```json
+{
+  "generatedToken": "your_jwt_token",
+  "user": {
+    "_id": "user_id",
+    "fullName": {
+      "firstName": "John",
+      "lastName": "Doe"
+    },
+    "email": "john.doe@example.com"
+  }
+}
+```

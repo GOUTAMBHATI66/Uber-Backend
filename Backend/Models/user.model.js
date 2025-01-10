@@ -38,8 +38,8 @@ userSchema.methods.generateAuthToken = () => {
 }
 
 // comparing the hasing password
-userSchema.methods.comparePassword = async (password) => {
-    return await bcrypt.compare(password, this.password)
+userSchema.methods.comparePassword = async (password, hashedPass) => {
+    return await bcrypt.compare(password, hashedPass)
 }
 
 // hasing the normal password
@@ -50,4 +50,5 @@ userSchema.statics.hashPassword = async (password) => {
 
 // generating the user model
 const userModel = mongoose.model('user', userSchema)
+
 module.exports = userModel

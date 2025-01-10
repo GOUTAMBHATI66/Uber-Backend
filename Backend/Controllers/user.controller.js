@@ -8,6 +8,7 @@ const registerUser = async (req,res,next) => {
     // checking the error in user's input
     const errors = validationResult(req)
     if(!errors.isEmpty()) {
+        // status code 400 for bad request
         return res.status(400).json({error: errors.array()})
     }
 
@@ -28,7 +29,41 @@ const registerUser = async (req,res,next) => {
     // once user created then generate it's token
     const generatedToken = user.generateAuthToken()
 
+    // status code 201 for successfully created
     res.status(201).json({generatedToken, user})
 }
 
-module.exports = {registerUser}
+// api for login user
+const loginUser = async (req,res,next) => {
+
+    const errors = validationResult(req)
+    if(!errors.isEmpty()){
+        return res.status(400).json({error: errors.array()})
+    }
+
+    // taking credential form frontend
+    const {email,password} = req.body
+
+    // searching user from its email
+    const user = await userModel.findOne({email}).select('+password')
+
+    // if user is not availble then show the error
+    if(!user) {
+        return res.status(401).json({ErrorMessage :" Invalid email and password"})
+    }
+
+    // if user available then compare its password with entered password
+    const isSamePass = await user.comparePassword(password, user.password)
+
+    // if password is dismatched then show the error
+    if(!isSamePass) {
+        return res.status(401).json({ErrorMessage: "Invalid email and password"})
+    }
+
+    // if password also matched, it means user is exists then genertate the token
+    const generatedToken = user.generateAuthToken()
+
+    res.status(200).json({generatedToken, user})
+}
+
+module.exports = {registerUser, loginUser}
