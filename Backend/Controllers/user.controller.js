@@ -1,6 +1,7 @@
 const userModel = require('../Models/user.model')
 const { validationResult} = require("express-validator")
 const userService = require("../Services/user.service")
+const blackLikstTokenModel = require('../Models/blackListToken.model')
 
 // api for register user
 const registerUser = async (req,res,next) => {
@@ -63,7 +64,25 @@ const loginUser = async (req,res,next) => {
     // if password also matched, it means user is exists then genertate the token
     const generatedToken = user.generateAuthToken()
 
+    res.cookie('token', generatedToken)
+
     res.status(200).json({generatedToken, user})
 }
 
-module.exports = {registerUser, loginUser}
+// api for geting the user profile or data
+const getUserProfile = async (req,res,next) => {
+    res.status(200).json(req.user)
+}
+
+// api for logout the user
+const userLogout = async (req,res,next) => {
+    res.clearCookie('token')
+
+    const token = req.cookies.token || req.headers.authorization.splite(' ')[1]
+
+    await blackLikstTokenModel.create({token})
+
+    res.status(200).json({Success:"Logout successfully"})
+}
+
+module.exports = {registerUser, loginUser, getUserProfile,userLogout}

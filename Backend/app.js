@@ -3,6 +3,9 @@ const dotenv = require('dotenv')
 const cors = require('cors')
 dotenv.config()
 
+// importing the cookie-parser
+const cookieparser = require('cookie-parser')
+
 // importing the user routes
 const userRoutes = require("./Routes/user.routes")
 
@@ -18,6 +21,7 @@ connectToDB()
 app.use(cors())
 app.use(express.json())
 app.use(express.urlencoded({extended:true}))
+app.use(cookieparser())
 
 // home route
 app.get("/", (req,res) => {
