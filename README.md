@@ -178,3 +178,101 @@ Example:
   }
 }
 ```
+
+## Endpoint: `/captains/login`
+
+### Method: POST
+
+### Description:
+This endpoint is used to log in an existing captain. It validates the input data, checks the captain's credentials, and generates an authentication token for the captain.
+
+### Request Body:
+The request body should be a JSON object with the following fields:
+
+- `email`: A valid email address (required).
+- `password`: A string with a minimum length of 8 characters (required).
+
+Example:
+```json
+{
+  "email": "john.doe@example.com",
+  "password": "password123"
+}
+```
+
+### Response:
+The response will be a JSON object containing the generated authentication token and the captain details.
+
+Example:
+```json
+{
+  "token": "your_jwt_token",
+  "captain": {
+    "_id": "captain_id",
+    "fullname": {
+      "firstname": "John",
+      "lastname": "Doe"
+    },
+    "email": "john.doe@example.com",
+    "vehical": {
+      "vehicalType": "car",
+      "capacity": 4,
+      "color": "red",
+      "plate": "ABC123"
+    }
+  }
+}
+```
+
+## Endpoint: `/captains/profile`
+
+### Method: GET
+
+### Description:
+This endpoint is used to get the profile of the logged-in captain. It requires authentication.
+
+### Headers:
+- `Authorization`: Bearer token (required)
+
+### Response:
+The response will be a JSON object containing the captain details.
+
+Example:
+```json
+{
+  "captain": {
+    "_id": "captain_id",
+    "fullname": {
+      "firstname": "John",
+      "lastname": "Doe"
+    },
+    "email": "john.doe@example.com",
+    "vehical": {
+      "vehicalType": "car",
+      "capacity": 4,
+      "color": "red",
+      "plate": "ABC123"
+    }
+  }
+}
+```
+
+## Endpoint: `/captains/logout`
+
+### Method: GET
+
+### Description:
+This endpoint is used to log out the captain. It requires authentication.
+
+### Headers:
+- `Authorization`: Bearer token (required)
+
+### Response:
+The response will be a JSON object confirming the logout.
+
+Example:
+```json
+{
+  "message": "Logout successfully"
+}
+```

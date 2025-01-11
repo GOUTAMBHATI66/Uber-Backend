@@ -32,18 +32,18 @@ const userSchema = new mongoose.Schema({
 })
 
 // generating the jwt 
-userSchema.methods.generateAuthToken = () => {
+userSchema.methods.generateAuthToken = function() {
     const token = jwt.sign({_id:this._id}, process.env.JWT_SECRET, {expiresIn:"24h"})
     return token
 }
 
 // comparing the hasing password
-userSchema.methods.comparePassword = async (password, hashedPass) => {
-    return await bcrypt.compare(password, hashedPass)
+userSchema.methods.comparePassword = async function(password) {
+    return await bcrypt.compare(password, this.password)
 }
 
 // hasing the normal password
-userSchema.statics.hashPassword = async (password) => {
+userSchema.statics.hashPassword = async function(password){
     return await bcrypt.hash(password,10)
 }
 

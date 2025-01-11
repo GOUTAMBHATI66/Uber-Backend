@@ -54,21 +54,17 @@ const loginUser = async (req,res,next) => {
 
     // searching user from its email
     const user = await userModel.findOne({email}).select('+password')
-
-    // if user is not availble then show the error
     if(!user) {
         return res.status(401).json({ErrorMessage :" Invalid email and password"})
     }
 
     // if user available then compare its password with entered password
-    const isSamePass = await user.comparePassword(password, user.password)
-
-    // if password is dismatched then show the error
+    const isSamePass = await user.comparePassword(password)
     if(!isSamePass) {
         return res.status(401).json({ErrorMessage: "Invalid email and password"})
     }
 
-    // if password also matched, it means user is exists then genertate the token
+    // if password matched, it means user is exists then genertate the token
     const generatedToken = user.generateAuthToken()
 
     res.cookie('token', generatedToken)
@@ -85,7 +81,7 @@ const getUserProfile = async (req,res,next) => {
 const userLogout = async (req,res,next) => {
     res.clearCookie('token')
 
-    const token = req.cookies.token || req.headers.authorization.splite(' ')[1]
+    const token = req.cookies.token || req.headers.authorization?.split(' ')[1]
 
     await blackLikstTokenModel.create({token})
 

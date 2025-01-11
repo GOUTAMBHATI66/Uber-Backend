@@ -65,17 +65,17 @@ const captainSchema = new mongoose.Schema({
 })
 
 // generating the jwt
-captainSchema.methods.getAuthToken = () => {
+captainSchema.methods.getAuthToken = function() {
     const token = jwt.sign({_id:this._id}, process.env.JWT_SECRET, {expiresIn:"24h"})
     return token
 }
 
 // comparing the hash password with normal password
-captainSchema.methods.comparePassword = async (password, hashedPass) => {
-    return await bcrypt.compare(password, hashedPass)
+captainSchema.methods.comparePassword = async function(password) {
+    return await bcrypt.compare(password, this.password)
 }
 
-captainSchema.statics.hashPassword = async (password) => {
+captainSchema.statics.hashPassword = async function(password) {
     return await bcrypt.hash(password,10)
 }
 
