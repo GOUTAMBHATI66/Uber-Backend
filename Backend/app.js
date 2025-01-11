@@ -6,8 +6,9 @@ dotenv.config()
 // importing the cookie-parser
 const cookieparser = require('cookie-parser')
 
-// importing the user routes
+// importing the different routes
 const userRoutes = require("./Routes/user.routes")
+const captainRoutes = require("./Routes/captain.routes")
 
 // setup express and its app
 const express = require('express')
@@ -28,8 +29,12 @@ app.get("/", (req,res) => {
     res.send("My Name is Goutam")
 })
 
-// all the routes
+// all the user routes
 app.use("/users",userRoutes)
+
+// all the captain routes
+app.use("/captains", captainRoutes)
+
 
 module.exports = app
 

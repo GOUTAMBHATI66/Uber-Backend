@@ -113,4 +113,68 @@ Example:
   "message": "Successfully logged out"
 }
 ```
-````
+
+# Captain Registration API
+
+## Endpoint: `/captains/register`
+
+### Method: POST
+
+### Description:
+This endpoint is used to register a new captain. It validates the input data, hashes the password, creates a new captain in the database, and generates an authentication token for the captain.
+
+### Request Body:
+The request body should be a JSON object with the following fields:
+
+- `fullname`: An object containing:
+  - `firstname`: A string with a minimum length of 3 characters (required).
+  - `lastname`: A string with a minimum length of 3 characters (optional).
+- `email`: A valid email address (required).
+- `password`: A string with a minimum length of 8 characters (required).
+- `vehical`: An object containing:
+  - `vehicalType`: A string with values 'car', 'auto', or 'bike' (required).
+  - `capacity`: A number with a minimum value of 1 (required).
+  - `color`: A string with a minimum length of 3 characters (required).
+  - `plate`: A string with a minimum length of 3 characters (required).
+
+Example:
+```json
+{
+  "fullname": {
+    "firstname": "John",
+    "lastname": "Doe"
+  },
+  "email": "john.doe@example.com",
+  "password": "password123",
+  "vehical": {
+    "vehicalType": "car",
+    "capacity": 4,
+    "color": "red",
+    "plate": "ABC123"
+  }
+}
+```
+
+### Response:
+The response will be a JSON object containing the generated authentication token and the captain details.
+
+Example:
+```json
+{
+  "token": "your_jwt_token",
+  "captain": {
+    "_id": "captain_id",
+    "fullname": {
+      "firstname": "John",
+      "lastname": "Doe"
+    },
+    "email": "john.doe@example.com",
+    "vehical": {
+      "vehicalType": "car",
+      "capacity": 4,
+      "color": "red",
+      "plate": "ABC123"
+    }
+  }
+}
+```

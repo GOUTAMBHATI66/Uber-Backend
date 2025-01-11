@@ -16,6 +16,13 @@ const registerUser = async (req,res,next) => {
     // take all the credentials from frontend
     const {fullName, email, password} = req.body
 
+
+    // cheking that user is already exist or not with provided email, if yes then show an error otherwise continue
+    const isUserAlreadyExists = await userModel.findOne({email})
+    if(isUserAlreadyExists){
+        return res.stauts(401).json({ErrorMessage: "User Already Exists."})
+    }
+
     // hash the password 
     const hashedPassword = await userModel.hashPassword(password)
 
@@ -28,10 +35,10 @@ const registerUser = async (req,res,next) => {
     })
 
     // once user created then generate it's token
-    const generatedToken = user.generateAuthToken()
+    const token = user.generateAuthToken()
 
     // status code 201 for successfully created
-    res.status(201).json({generatedToken, user})
+    res.status(201).json({token, user})
 }
 
 // api for login user
